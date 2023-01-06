@@ -1,11 +1,14 @@
-<script setup lang="ts">
+<script lang="ts">
 import { routes } from '@/router/router';
-import { defineComponent } from "vue";
-defineComponent({
-  setup() {
-    return { routes };
+
+export default {
+  name: 'Header',
+  data() {
+    return {
+      routes
+    };
   }
-});
+};
 </script>
 
 <template>

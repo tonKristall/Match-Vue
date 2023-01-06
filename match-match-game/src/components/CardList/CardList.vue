@@ -1,28 +1,48 @@
 <script lang="ts">
-import { useGameStore } from '@/stores/game.store';
+import type { Ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useGameStore, type TGameStore } from '@/stores/game.store';
+
+type TInitialComponent = {
+  gameStore: TGameStore,
+  isStartGame: Ref<boolean>,
+  isRememberStage: boolean,
+  currentImages: string[],
+  openedCards: number[],
+  findedCards: number[],
+};
 
 export default {
-  data() {
+  name: 'CardList',
+  data(): TInitialComponent {
+    const gameStore = useGameStore();
+    const { isStartGame } = storeToRefs(gameStore);
     return {
-      gameStore: useGameStore(),
+      gameStore,
+      isStartGame,
       isRememberStage: false,
-      openedCards: [] as number[],
-      findedCards: [] as number[],
-      errorCards: [] as number[],
+      currentImages: [],
+      openedCards: [],
+      findedCards: [],
     };
   },
   methods: {
+    checkFinishGame() {
+      if (this.findedCards.length === this.gameStore.difficulty ** 2) {
+        this.currentImages = [];
+        this.gameStore.setStartGame(false);
+      }
+    },
     checkCards() {
       const [firstIndex, secondIndex] = this.openedCards;
       if (this.currentImages[firstIndex] === this.currentImages[secondIndex]) {
         this.findedCards = [...this.findedCards, ...this.openedCards];
         this.openedCards = [];
+        this.checkFinishGame();
       } else {
-        this.errorCards = this.openedCards;
         setTimeout(() => {
           this.openedCards = [];
-          this.errorCards = [];
-        }, 1000);
+        }, 400);
       }
     },
     handleClickCard(index: number) {
@@ -41,12 +61,19 @@ export default {
       return this.isRememberStage || this.openedCards.includes(index) || this.findedCards.includes(index);
     },
     isFindedCards(index: number) {
-      return this.isRememberStage || this.openedCards.includes(index);
-    }
+      return this.findedCards.includes(index);
+    },
+    startGame() {
+      this.currentImages = this.gameStore.getImagesByCategory();
+      this.openedCards = [];
+      this.findedCards = [];
+    },
   },
-  computed: {
-    currentImages() {
-      return this.gameStore.getImagesByCategory;
+  watch: {
+    isStartGame(value) {
+      if (value) {
+        this.startGame();
+      }
     }
   }
 };
@@ -58,7 +85,8 @@ export default {
       style="height: calc(100%/4 - 1.5%); width: calc(100%/4 - 1.5%);">
       <div :class="['card__container', { reverse: !isOpenCard(index) }]" @click="handleClickCard(index)">
         <div class="card__back"></div>
-        <div class="card__front" :style="{ backgroundImage: `url(${url})` }"></div>
+        <div :class="['card__front', { 'good-open': isFindedCards(index) }]"
+          :style="{ backgroundImage: `url(${url})` }"></div>
       </div>
     </div>
   </div>
@@ -87,7 +115,7 @@ export default {
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transition: transform 0.5s;
+  transition: transform 0.4s;
 }
 
 .card__container.reverse {
@@ -119,5 +147,10 @@ export default {
   top: 0;
   left: 0;
   border-radius: 5px;
+}
+
+.good-open {
+  opacity: 0.5;
+  transition: opacity 0.2s;
 }
 </style>

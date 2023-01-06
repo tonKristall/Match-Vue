@@ -9,6 +9,8 @@ type TState = {
   difficulty: number;
   category: string;
   images: TImage[];
+  isStartGame: boolean;
+  lastTime: string;
 };
 
 const initialState: TState = {
@@ -17,6 +19,8 @@ const initialState: TState = {
   difficulty: 4,
   category: '',
   images: [],
+  isStartGame: false,
+  lastTime: '',
 };
 
 export const useGameStore = defineStore({
@@ -24,14 +28,13 @@ export const useGameStore = defineStore({
   state: () => initialState,
 
   getters: {
-    getIsLoading: (state) => state.isLoading,
     getImagesByCategory: (state) => {
       const images = state.images.find((item) => state.category === item.category);
       if (images) {
         const urls = images.urls.slice(0, state.difficulty ** 2 / 2);
-        return shuffleArray([...urls, ...urls]);
+        return () => shuffleArray([...urls, ...urls]);
       }
-      return [];
+      return () => [];
     },
   },
 
@@ -48,5 +51,13 @@ export const useGameStore = defineStore({
         this.isLoading = false;
       }
     },
+    setStartGame(payload: boolean) {
+      this.isStartGame = payload;
+    },
+    setLastTime(payload: string) {
+      this.lastTime = payload;
+    },
   },
 });
+
+export type TGameStore = ReturnType<typeof useGameStore>;

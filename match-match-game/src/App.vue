@@ -1,8 +1,16 @@
-<script setup lang="ts">
-import Header from '@/components/Header/Header.vue';
+<script lang="ts">
 import { useGameStore } from './stores/game.store';
 
-useGameStore().fetchImages();
+export default {
+  name: 'App',
+  mounted() {
+    useGameStore().fetchImages();
+  },
+  components: {
+    Header: () => import('@/components/Header/Header.vue')
+  }
+}
+
 </script>
 
 <template>
