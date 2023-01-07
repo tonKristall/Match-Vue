@@ -4,11 +4,11 @@ import { useGameStore } from '@/stores/game.store';
 export default {
   name: 'GameStart',
   data() {
-    const {setStartGame} = useGameStore();
+    const { setStartGame } = useGameStore();
     return {
       setStartGame,
     };
-  }
+  },
 };
 </script>
 
@@ -30,6 +30,7 @@ export default {
   left: 0;
   border-radius: 15px;
   background-color: rgba(00, 00, 00, 0.5);
+  z-index: 10;
 }
 
 .game-start__button {

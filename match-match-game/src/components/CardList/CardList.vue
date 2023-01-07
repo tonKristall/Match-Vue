@@ -2,6 +2,7 @@
 import type { Ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore, type TGameStore } from '@/stores/game.store';
+import { TIME_REMEMBER_STAGE } from '@/const';
 
 type TInitialComponent = {
   gameStore: TGameStore,
@@ -46,7 +47,7 @@ export default {
       }
     },
     handleClickCard(index: number) {
-      if (this.openedCards.includes(index) || this.findedCards.includes(index)) return;
+      if (this.isOpenCard(index)) return;
       switch (this.openedCards.length) {
         case 0:
           this.openedCards.push(index);
@@ -67,6 +68,10 @@ export default {
       this.currentImages = this.gameStore.getImagesByCategory();
       this.openedCards = [];
       this.findedCards = [];
+      this.isRememberStage = true;
+      setTimeout(() => {
+        this.isRememberStage = false;
+      }, TIME_REMEMBER_STAGE);
     },
   },
   watch: {

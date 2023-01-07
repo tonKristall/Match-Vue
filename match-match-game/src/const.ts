@@ -6,3 +6,5 @@ export const firebaseConfig = {
   messagingSenderId: '168920621826',
   appId: '1:168920621826:web:e4658909ed5f5dc271581b',
 };
+
+export const TIME_REMEMBER_STAGE = 5000;

@@ -7,7 +7,7 @@ type TInitComponent = {
   gameStore: TGameStore;
   isStartGame: Ref<boolean>;
   timer: NodeJS.Timer | null;
-  timeGame: string;
+  timeGame: string | null;
 };
 
 export default defineComponent({
@@ -18,12 +18,13 @@ export default defineComponent({
     return {
       gameStore,
       isStartGame,
-      timeGame: '00:00',
+      timeGame: null,
       timer: null,
     };
   },
   methods: {
-    startGame() {
+    startTimer() {
+      this.timeGame = '00:00';
       const startTime = new Date().getTime();
       this.timer = setInterval(() => {
         const nowTime = new Date().getTime();
@@ -35,17 +36,24 @@ export default defineComponent({
         this.timeGame = `${minutesStr}:${secondsStr}`;
       }, 1000);
     },
-    stopGame() {
+    stopTimer() {
       if (this.timer) {
         clearInterval(this.timer);
+      }
+      if (this.timeGame) {
         this.gameStore.setLastTime(this.timeGame);
       }
+      this.timeGame = null;
     }
   },
   watch: {
     isStartGame(value) {
-      value ? this.startGame() : this.stopGame();
+      value ? this.startTimer() : this.stopTimer();
     }
+  },
+  beforeDestroy() {
+    this.timeGame = null;
+    this.stopTimer();
   }
 });
 </script>
