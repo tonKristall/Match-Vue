@@ -4,8 +4,7 @@ import { useGameStore } from '@/stores/game.store';
 export default {
   name: 'GameStart',
   components: {
-    GameScore: () => import('@/components/GameScore/GameScore.vue'),
-    ButtonApp: () => import('@/ui/ButtonApp.vue'),
+    GameScore: () => import("@/components/GameScore/GameScore.vue"),
   },
   data() {
     const { setStartGame } = useGameStore();
@@ -22,7 +21,7 @@ export default {
 <template>
   <div class="game-start">
     <GameScore />
-    <ButtonApp text="start game" :handleClick="startGame" />
+    <BaseButton text="start game" :handleClick="startGame" />
   </div>
 </template>
 

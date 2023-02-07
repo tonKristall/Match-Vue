@@ -3,9 +3,7 @@ import { useGameStore } from '@/stores/game.store';
 
 export default {
   name: 'GameScore',
-  components: {
-    ButtonApp: () => import('@/ui/ButtonApp.vue')
-  },
+
   data() {
     const store = useGameStore();
     const saveResult = () => {
@@ -22,7 +20,7 @@ export default {
 <template>
   <div v-if="store.lastTime" class="game-result">
     <div class="game-result__text">Your time is {{ store.lastTime }} </div>
-    <ButtonApp text="Save Result" :handleClick="saveResult" />
+    <BaseButton text="Save Result" :handleClick="saveResult" />
   </div>
 </template>
 

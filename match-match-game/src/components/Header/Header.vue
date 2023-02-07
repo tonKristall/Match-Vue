@@ -21,7 +21,7 @@ export default {
         <router-link :to=routes.home.path>{{ routes.home.name }}</router-link>
         <router-link :to=routes.score.path>{{ routes.score.name }}</router-link>
       </nav>
-      <span class="register">register new player</span>
+      <router-link :to=routes.login.path>{{ routes.login.name }}</router-link>
     </div>
   </header>
 </template>
@@ -37,22 +37,27 @@ header {
   align-items: center;
 }
 
-.navigation a.router-link-exact-active {
+.navigation {
+  flex-grow: 1;
+  text-align: center;
+}
+
+a.router-link-exact-active {
   color: var(--color-text);
   cursor: default;
 }
 
-.navigation a.router-link-exact-active:hover {
+a.router-link-exact-active:hover {
   background-color: transparent;
 }
 
-.navigation a {
+a {
   display: inline-block;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
 }
 
-.navigation a:first-of-type {
+a:first-of-type {
   border: 0;
 }
 </style>

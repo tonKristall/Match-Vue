@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { Ref } from 'vue';
+import { defineComponent, type Ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore, type TGameStore } from '@/stores/game.store';
 import { TIME_REMEMBER_STAGE } from '@/const';
@@ -13,7 +13,7 @@ type TInitialComponent = {
   findedCards: number[],
 };
 
-export default {
+export default defineComponent({
   name: 'CardList',
   data(): TInitialComponent {
     const gameStore = useGameStore();
@@ -81,7 +81,7 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <template>
