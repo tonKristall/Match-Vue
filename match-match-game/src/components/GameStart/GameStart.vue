@@ -4,11 +4,12 @@ import { useGameStore } from '@/stores/game.store';
 export default {
   name: 'GameStart',
   components: {
-    GameScore: () => import("@/components/GameScore/GameScore.vue"),
+    GameScore: () => import('@/components/GameScore/GameScore.vue'),
   },
   data() {
-    const { setStartGame } = useGameStore();
+    const { setStartGame, setLastTime } = useGameStore();
     const startGame = () => {
+      setLastTime('');
       setStartGame(true);
     };
     return {
