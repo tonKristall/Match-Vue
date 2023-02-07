@@ -3,10 +3,17 @@ import { useGameStore } from '@/stores/game.store';
 
 export default {
   name: 'GameStart',
+  components: {
+    GameScore: () => import('@/components/GameScore/GameScore.vue'),
+    ButtonApp: () => import('@/ui/ButtonApp.vue'),
+  },
   data() {
     const { setStartGame } = useGameStore();
+    const startGame = () => {
+      setStartGame(true);
+    };
     return {
-      setStartGame,
+      startGame,
     };
   },
 };
@@ -14,7 +21,8 @@ export default {
 
 <template>
   <div class="game-start">
-    <button class="game-start__button green" type="button" @click="() => setStartGame(true)">start</button>
+    <GameScore />
+    <ButtonApp text="start game" :handleClick="startGame" />
   </div>
 </template>
 
@@ -23,6 +31,7 @@ export default {
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: absolute;
@@ -31,13 +40,5 @@ export default {
   border-radius: 15px;
   background-color: rgba(00, 00, 00, 0.5);
   z-index: 10;
-}
-
-.game-start__button {
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 20px;
-  text-transform: capitalize;
-  border-radius: 10px;
 }
 </style>
