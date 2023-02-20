@@ -1,39 +1,65 @@
 <script lang="ts">
+import GuardRoutes from '@/hoc/GuardRoutes.vue';
 import { routes } from '@/router/router';
+import { useUserStore } from '@/stores/user.store';
+import { useVuelidate } from '@vuelidate/core';
+import { required, email, minLength } from '@vuelidate/validators';
 
 export default {
-  name: 'LoginUserview',
+  name: "LoginUserview",
+  setup() {
+    return { v$: useVuelidate() };
+  },
   data() {
-    const email = '';
-    const password = '';
+    const { authUser } = useUserStore();
+    const email = "";
+    const password = "";
     return {
       routes,
       email,
       password,
+      authUser
     };
   },
+  validations() {
+    return {
+      email: { required, email },
+      password: { required }
 
+    };
+  },
   methods: {
-    signIn() {
-      console.log(this.email, this.password);
+    async signIn() {
+      const isFormCorrect = await this.v$.$validate();
+      if (!isFormCorrect) return;
+      this.authUser({ email: this.email, password: this.password });
     },
   },
+  components: { GuardRoutes }
 };
 </script>
 
 <template>
-  <main class="container main-container">
-    <h2>Log in to your account</h2>
-    <div>
-      <span>Don't have an account? </span>
-      <router-link :to="routes.register.path">{{ routes.register.name }}</router-link>
-    </div>
-    <form class="login-form" id="login-form">
-      <BaseInput type="email" id="email" label="E-mail" v-model="email" />
-      <BaseInput type="password" id="password" label="Password" v-model="password" />
-      <BaseButton text="Sign In" type="submit" :handleClick="signIn" />
-    </form>
-  </main>
+  <GuardRoutes>
+    <main class="container main-container">
+      <h2>Log in to your account</h2>
+      <div>
+        <span>Don't have an account? </span>
+        <router-link :to="routes.register.path">{{ routes.register.name }}</router-link>
+      </div>
+      <form class="login-form" novalidate="true" @submit.prevent="signIn">
+        <div>
+          <BaseInput type="email" id="email" label="E-mail" v-model="email" />
+          <BaseErrorField :errorMessage="v$.email.$errors[0]?.$message" />
+        </div>
+        <div>
+          <BaseInput type="password" id="password" label="Password" v-model="password" />
+          <BaseErrorField :errorMessage="v$.password.$errors[0]?.$message" />
+        </div>
+        <BaseButton text="Sign In" type="submit" />
+      </form>
+    </main>
+  </GuardRoutes>
 </template>
 
 <style scoped>
@@ -42,6 +68,6 @@ export default {
   max-width: 300px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 </style>

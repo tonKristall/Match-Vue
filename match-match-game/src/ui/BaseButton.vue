@@ -13,7 +13,6 @@ export default {
     },
     handleClick: {
       type: Function as PropType<THandleClick>,
-      required: true,
     },
     type: {
       type: String as PropType<TTypeButton>,
@@ -25,7 +24,8 @@ export default {
 </script>
 
 <template>
-  <button class="button green" :type="type" @click.prevent="handleClick">{{ text }}</button>
+  <button v-if="type === 'submit'" class="button green" :type="type">{{ text }}</button>
+  <button v-else class="button green" :type="type" @click.prevent="handleClick">{{ text }}</button>
 </template>
 
 <style>

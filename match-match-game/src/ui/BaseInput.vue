@@ -25,13 +25,8 @@ export default {
 <template>
   <div class="wrapper">
     <label :for="id" class="label">{{ label }}</label>
-    <input
-      :type="type"
-      :id="id"
-      class="input"
-      :value="value"
-      @input="$emit('input', $event.target && 'value' in $event.target && $event.target?.value)"
-    />
+    <input :type="type" :id="id" class="input" :value="value"
+      @input="$emit('input', $event.target && 'value' in $event.target && $event.target?.value)" />
   </div>
 </template>
 

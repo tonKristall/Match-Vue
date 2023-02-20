@@ -1,13 +1,23 @@
 <script lang="ts">
 import { routes } from '@/router/router';
+import { useUserStore } from '@/stores/user.store';
+import BaseButton from '@/ui/BaseButton.vue';
+import { storeToRefs } from 'pinia';
 
 export default {
-  name: 'Header',
+  name: "Header",
   data() {
+    const storeUser = useUserStore();
+    const { logoutUser } = storeUser;
+    const { user } = storeToRefs(storeUser);
     return {
-      routes
+      routes,
+      storeUser,
+      user,
+      logoutUser,
     };
-  }
+  },
+  components: { BaseButton }
 };
 </script>
 
@@ -21,7 +31,9 @@ export default {
         <router-link :to=routes.home.path>{{ routes.home.name }}</router-link>
         <router-link :to=routes.score.path>{{ routes.score.name }}</router-link>
       </nav>
-      <router-link :to=routes.login.path>{{ routes.login.name }}</router-link>
+
+      <router-link v-if="!user" :to=routes.login.path>{{ routes.login.name }}</router-link>
+      <BaseButton v-else class="button-header" type="button" text="Logout" :handleClick="logoutUser" />
     </div>
   </header>
 </template>
@@ -59,5 +71,17 @@ a {
 
 a:first-of-type {
   border: 0;
+}
+
+.button-header {
+  padding: 0 1rem;
+  background: none;
+  font-size: inherit;
+  line-height: 24px;
+}
+
+.button-header:hover {
+  border-radius: 0;
+  background-color: hsla(160, 100%, 37%, 0.2);
 }
 </style>

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { gameService } from '@/servises/game.servise';
+import { gameService } from '@/services/game.service';
 import { shuffleArray } from '@/helpers/shuffleArray';
 import type { TImage } from '@/types/game.types';
 
@@ -24,7 +24,7 @@ const initialState: TState = {
 };
 
 export const useGameStore = defineStore({
-  id: 'images',
+  id: 'game',
   state: () => initialState,
 
   getters: {
