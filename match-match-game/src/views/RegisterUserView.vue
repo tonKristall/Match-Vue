@@ -24,8 +24,8 @@ export default {
   validations() {
     return {
       email: { required, email },
-      password: { required, minLengthValue: minLength(6), },
-      displayName: { required, minLengthValue: minLength(2) }
+      password: { required, minLengthValue: minLength(6) },
+      displayName: { required, minLengthValue: minLength(2) },
     };
   },
   methods: {

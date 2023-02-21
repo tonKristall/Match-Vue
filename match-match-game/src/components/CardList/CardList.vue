@@ -86,12 +86,18 @@ export default defineComponent({
 
 <template>
   <div class="card-list">
-    <div class="card" v-for="(url, index) in currentImages" :key="index"
-      style="height: calc(100%/4 - 1.5%); width: calc(100%/4 - 1.5%);">
+    <div
+      class="card"
+      v-for="(url, index) in currentImages"
+      :key="index"
+      style="height: calc(100% / 4 - 1.5%); width: calc(100% / 4 - 1.5%);"
+    >
       <div :class="['card__container', { reverse: !isOpenCard(index) }]" @click="handleClickCard(index)">
         <div class="card__back"></div>
-        <div :class="['card__front', { 'good-open': isFindedCards(index) }]"
-          :style="{ backgroundImage: `url(${url})` }"></div>
+        <div
+          :class="['card__front', { 'good-open': isFindedCards(index) }]"
+          :style="{ backgroundImage: `url(${url})` }"
+        ></div>
       </div>
     </div>
   </div>

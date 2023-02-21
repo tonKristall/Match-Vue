@@ -5,12 +5,12 @@ import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "GuardRoutes",
+  name: 'GuardRoutes',
   data() {
     const userStore = useUserStore();
     const { user } = storeToRefs(userStore);
     return {
-      user
+      user,
     };
   },
   methods: {
@@ -18,16 +18,16 @@ export default defineComponent({
       if (this.user) {
         this.$router.replace(routes.home.path);
       }
-    }
+    },
   },
   watch: {
     user() {
       this.checkAuthUser();
-    }
+    },
   },
   beforeMount() {
     this.checkAuthUser();
-  }
+  },
 });
 </script>
 

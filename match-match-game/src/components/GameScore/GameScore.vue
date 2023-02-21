@@ -13,13 +13,13 @@ export default {
       store,
       saveResult,
     };
-  }
+  },
 };
 </script>
 
 <template>
   <div v-if="store.lastTime" class="game-result">
-    <div class="game-result__text">Your time is {{ store.lastTime }} </div>
+    <div class="game-result__text">Your time is {{ store.lastTime }}</div>
     <BaseButton text="Save Result" :handleClick="saveResult" />
   </div>
 </template>

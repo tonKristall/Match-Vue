@@ -5,7 +5,7 @@ import BaseButton from '@/ui/BaseButton.vue';
 import { storeToRefs } from 'pinia';
 
 export default {
-  name: "Header",
+  name: 'Header',
   data() {
     const storeUser = useUserStore();
     const { logoutUser } = storeUser;
@@ -17,7 +17,7 @@ export default {
       logoutUser,
     };
   },
-  components: { BaseButton }
+  components: { BaseButton },
 };
 </script>
 
@@ -28,11 +28,11 @@ export default {
         <h1 class="h1">Match-Match</h1>
       </div>
       <nav class="navigation">
-        <router-link :to=routes.home.path>{{ routes.home.name }}</router-link>
-        <router-link :to=routes.score.path>{{ routes.score.name }}</router-link>
+        <router-link :to="routes.home.path">{{ routes.home.name }}</router-link>
+        <router-link :to="routes.score.path">{{ routes.score.name }}</router-link>
       </nav>
 
-      <router-link v-if="!user" :to=routes.login.path>{{ routes.login.name }}</router-link>
+      <router-link v-if="!user" :to="routes.login.path">{{ routes.login.name }}</router-link>
       <BaseButton v-else class="button-header" type="button" text="Logout" :handleClick="logoutUser" />
     </div>
   </header>

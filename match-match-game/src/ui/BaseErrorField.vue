@@ -6,8 +6,8 @@ export default defineComponent({
   props: {
     errorMessage: {
       type: String,
-    }
-  }
+    },
+  },
 });
 </script>
 

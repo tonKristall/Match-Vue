@@ -1,4 +1,10 @@
-import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signOut,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
 
 export const userService = {
   async register(email: string, password: string) {
@@ -21,5 +27,5 @@ export const userService = {
     if (currentUser) {
       return updateProfile(currentUser, { displayName, photoURL: '25' });
     }
-  }
+  },
 };
