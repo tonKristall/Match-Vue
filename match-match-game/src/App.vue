@@ -7,7 +7,7 @@ export default {
   data() {
     const { initUser } = useUserStore();
     return {
-      initUser
+      initUser,
     };
   },
   async beforeMount() {
@@ -17,16 +17,17 @@ export default {
     useGameStore().fetchImages();
   },
   components: {
-    Header: () => import('@/components/Header/Header.vue')
-  }
-}
-
+    Header: () => import('@/components/Header/Header.vue'),
+    NotificationsList: () => import('@/components/Notifications/NotificationsList.vue'),
+  },
+};
 </script>
 
 <template>
   <div id="app">
     <Header />
     <router-view />
+    <NotificationsList />
   </div>
 </template>
 

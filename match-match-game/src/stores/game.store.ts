@@ -2,10 +2,13 @@ import { defineStore } from 'pinia';
 import { gameService } from '@/services/game.service';
 import { shuffleArray } from '@/helpers/shuffleArray';
 import type { TImage } from '@/types/game.types';
+import { useNotificationsStore } from './notifications.store';
+import { getRandomId } from '@/helpers/getRandomId';
+import type { TNotification } from '@/types/notification.types';
+import { getErrorMessage } from '@/helpers/getErrorMessage';
 
 type TState = {
   isLoading: boolean;
-  errorLoading: string;
   difficulty: number;
   category: string;
   images: TImage[];
@@ -15,7 +18,6 @@ type TState = {
 
 const initialState: TState = {
   isLoading: false,
-  errorLoading: '',
   difficulty: 4,
   category: '',
   images: [],
@@ -45,8 +47,11 @@ export const useGameStore = defineStore({
         const images = await gameService.getImages();
         this.images = images;
         this.category = images[0].category;
-      } catch {
-        this.errorLoading = 'Error loading images';
+      } catch (error) {
+        const { addNotification } = useNotificationsStore();
+        const message = getErrorMessage(error) || 'Error loading images';
+        const notification: TNotification = { id: getRandomId(), type: 'error', message };
+        addNotification(notification);
       } finally {
         this.isLoading = false;
       }

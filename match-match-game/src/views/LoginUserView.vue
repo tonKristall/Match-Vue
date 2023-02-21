@@ -6,26 +6,23 @@ import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength } from '@vuelidate/validators';
 
 export default {
-  name: "LoginUserview",
+  name: 'LoginUserview',
   setup() {
     return { v$: useVuelidate() };
   },
   data() {
     const { authUser } = useUserStore();
-    const email = "";
-    const password = "";
     return {
       routes,
-      email,
-      password,
-      authUser
+      authUser,
+      email: '',
+      password: '',
     };
   },
   validations() {
     return {
       email: { required, email },
-      password: { required }
-
+      password: { required },
     };
   },
   methods: {
@@ -35,7 +32,7 @@ export default {
       this.authUser({ email: this.email, password: this.password });
     },
   },
-  components: { GuardRoutes }
+  components: { GuardRoutes },
 };
 </script>
 
