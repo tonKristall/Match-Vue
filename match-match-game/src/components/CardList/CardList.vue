@@ -1,10 +1,10 @@
 <script lang="ts">
-import { defineComponent, type Ref } from 'vue';
+import type { Ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore, type TGameStore } from '@/stores/game.store';
 import { TIME_REMEMBER_STAGE } from '@/const';
 
-type TInitialComponent = {
+type TDataComponent = {
   gameStore: TGameStore,
   isStartGame: Ref<boolean>,
   isRememberStage: boolean,
@@ -13,9 +13,9 @@ type TInitialComponent = {
   findedCards: number[],
 };
 
-export default defineComponent({
+export default {
   name: 'CardList',
-  data(): TInitialComponent {
+  data(): TDataComponent {
     const gameStore = useGameStore();
     const { isStartGame } = storeToRefs(gameStore);
     return {
@@ -31,7 +31,7 @@ export default defineComponent({
     checkFinishGame() {
       if (this.findedCards.length === this.gameStore.difficulty ** 2) {
         this.currentImages = [];
-        this.gameStore.setStartGame(false);
+        this.gameStore.finishGame();
       }
     },
     checkCards() {
@@ -81,7 +81,7 @@ export default defineComponent({
       }
     }
   }
-});
+};
 </script>
 
 <template>

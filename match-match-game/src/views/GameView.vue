@@ -13,14 +13,14 @@ export default defineComponent({
   data() {
     const gameStore = useGameStore();
     const { isStartGame } = storeToRefs(gameStore);
-    const { setStartGame } = gameStore;
+    const { finishGame } = gameStore;
     return {
-      setStartGame,
+      finishGame,
       isStartGame,
     };
   },
   beforeDestroy() {
-    this.setStartGame(false);
+    this.finishGame();
   },
 });
 </script>

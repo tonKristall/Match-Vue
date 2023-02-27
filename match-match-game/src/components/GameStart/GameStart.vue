@@ -7,11 +7,7 @@ export default {
     GameScore: () => import('@/components/GameScore/GameScore.vue'),
   },
   data() {
-    const { setStartGame, setLastTime } = useGameStore();
-    const startGame = () => {
-      setLastTime('');
-      setStartGame(true);
-    };
+    const { startGame } = useGameStore();
     return {
       startGame,
     };

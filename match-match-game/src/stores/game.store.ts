@@ -6,6 +6,7 @@ import { useNotificationsStore } from './notifications.store';
 import { getRandomId } from '@/helpers/getRandomId';
 import type { TNotification } from '@/types/notification.types';
 import { getErrorMessage } from '@/helpers/getErrorMessage';
+import { useUserStore } from './user.store';
 
 type TState = {
   isLoading: boolean;
@@ -13,7 +14,8 @@ type TState = {
   category: string;
   images: TImage[];
   isStartGame: boolean;
-  lastTime: string;
+  lastScore: number | null;
+  bestScore: number | null;
 };
 
 const initialState: TState = {
@@ -22,7 +24,8 @@ const initialState: TState = {
   category: '',
   images: [],
   isStartGame: false,
-  lastTime: '',
+  lastScore: null,
+  bestScore: null,
 };
 
 export const useGameStore = defineStore({
@@ -56,11 +59,48 @@ export const useGameStore = defineStore({
         this.isLoading = false;
       }
     },
-    setStartGame(payload: boolean) {
-      this.isStartGame = payload;
+
+    startGame() {
+      this.isStartGame = true;
+      this.lastScore = 0;
     },
-    setLastTime(payload: string) {
-      this.lastTime = payload;
+
+    finishGame() {
+      this.isStartGame = false;
+    },
+
+    async setLastScore(payload: number | null) {
+      if (payload) {
+        this.lastScore = Math.floor((this.difficulty ** 2 * 1000) / payload);
+        await this.postScore();
+      } else {
+        this.lastScore = payload;
+      }
+    },
+
+    async postScore() {
+      const { user } = useUserStore();
+      if (!user || !this.lastScore) return;
+      try {
+        if (!this.bestScore) {
+          const scoreData = await gameService.getScoreByUserId(user.uid);
+          this.bestScore = scoreData.val();
+        }
+        if (!this.bestScore || this.bestScore < this.lastScore) {
+          await gameService.saveScore(user.uid, this.lastScore);
+          this.bestScore = this.lastScore;
+        }
+      } catch (error) {
+        const { addNotification } = useNotificationsStore();
+        const message = getErrorMessage(error) || 'Error saving score';
+        const notification: TNotification = { id: getRandomId(), type: 'error', message };
+        addNotification(notification);
+      }
+    },
+
+    clearGameData() {
+      this.lastScore = null;
+      this.bestScore = null;
     },
   },
 });

@@ -5,6 +5,7 @@ import type { TNotification } from '@/types/notification.types';
 import type { TEditProfileData, TSendLoginUserData, TSendRegUserData, TUserData } from '@/types/user.types';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { defineStore } from 'pinia';
+import { useGameStore } from './game.store';
 import { useNotificationsStore } from './notifications.store';
 
 type TState = {
@@ -22,12 +23,6 @@ const initialState: TState = {
 export const useUserStore = defineStore({
   id: 'user',
   state: () => initialState,
-
-  getters: {
-    getUser(state) {
-      return state.user;
-    },
-  },
 
   actions: {
     initUser() {
@@ -64,6 +59,7 @@ export const useUserStore = defineStore({
         const { user } = await userService.auth(email, password);
         const { uid, displayName } = user;
         this.user = { uid, displayName };
+        useGameStore().postScore();
       } catch (error) {
         const { addNotification } = useNotificationsStore();
         const message = getErrorMessage(error) || 'Error auth';
@@ -77,6 +73,7 @@ export const useUserStore = defineStore({
       try {
         await userService.logout();
         this.user = null;
+        useGameStore().clearGameData();
       } catch (error) {
         const { addNotification } = useNotificationsStore();
         const message = getErrorMessage(error) || 'Error logout';

@@ -5,6 +5,7 @@ export const firebaseConfig = {
   storageBucket: 'match-match-a380f.appspot.com',
   messagingSenderId: '168920621826',
   appId: '1:168920621826:web:e4658909ed5f5dc271581b',
+  databaseURL: 'https://match-match-a380f-default-rtdb.firebaseio.com/',
 };
 
 export const TIME_REMEMBER_STAGE = 5000;

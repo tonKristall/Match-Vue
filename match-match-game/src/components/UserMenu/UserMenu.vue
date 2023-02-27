@@ -37,8 +37,7 @@ export default {
 
 <template>
   <div class="user-menu">
-    <BaseButton class="user-menu__button" type="button" :text="user?.displayName" :handleClick="toggleMenu" />
-    <!-- <div class="user-menu__icon" @click="toggleMenu"></div> -->
+    <BaseButton class="user-menu__button" type="button" :text="user?.displayName || ''" :handleClick="toggleMenu" />
     <transition name="user-menu-fade">
       <div class="user-menu__list" v-show="isOpenMenu">
         <BaseButton class="user-menu__button" type="button" text="Edit Profile" :handleClick="editProfile" />
