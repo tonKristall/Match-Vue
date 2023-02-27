@@ -4,14 +4,18 @@ import useVuelidate from '@vuelidate/core';
 import { minLength, required } from '@vuelidate/validators';
 
 export default {
-  name: 'RegisterUserview',
+  name: 'EditProfileForm',
   props: {
     cancelEdit: { type: Function, required: true },
   },
   setup() {
-    const { user, updateProfile } = useUserStore();
     return {
       v$: useVuelidate(),
+    };
+  },
+  data() {
+    const { user, updateProfile } = useUserStore();
+    return {
       displayName: user?.displayName || '',
       updateProfile,
     };
