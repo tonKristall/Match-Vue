@@ -1,7 +1,6 @@
 <script lang="ts">
 import { routes } from '@/router/router';
 import { useUserStore } from '@/stores/user.store';
-import BaseButton from '@/ui/BaseButton.vue';
 import { storeToRefs } from 'pinia';
 
 export default {
@@ -17,7 +16,7 @@ export default {
       logoutUser,
     };
   },
-  components: { BaseButton },
+  components: { UserMenu: () => import('@/components/UserMenu/UserMenu.vue') },
 };
 </script>
 
@@ -33,7 +32,7 @@ export default {
       </nav>
 
       <router-link v-if="!user" :to="routes.login.path">{{ routes.login.name }}</router-link>
-      <BaseButton v-else class="button-header" type="button" text="Logout" :handleClick="logoutUser" />
+      <UserMenu v-else />
     </div>
   </header>
 </template>
@@ -71,17 +70,5 @@ a {
 
 a:first-of-type {
   border: 0;
-}
-
-.button-header {
-  padding: 0 1rem;
-  background: none;
-  font-size: inherit;
-  line-height: 24px;
-}
-
-.button-header:hover {
-  border-radius: 0;
-  background-color: hsla(160, 100%, 37%, 0.2);
 }
 </style>

@@ -7,6 +7,7 @@ import { firebaseConfig } from '@/const';
 import BaseButton from './ui/BaseButton.vue';
 import BaseInput from './ui/BaseInput.vue';
 import BaseErrorField from './ui/BaseErrorField.vue';
+import Portal from '@/hoc/Portal.vue';
 import './styles/main.css';
 
 Vue.use(PiniaVuePlugin);
@@ -14,6 +15,7 @@ Vue.use(PiniaVuePlugin);
 Vue.component('BaseButton', BaseButton);
 Vue.component('BaseInput', BaseInput);
 Vue.component('BaseErrorField', BaseErrorField);
+Vue.component('Portal', Portal);
 
 initializeApp(firebaseConfig);
 

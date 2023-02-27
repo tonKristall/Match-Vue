@@ -2,7 +2,7 @@ import { getErrorMessage } from '@/helpers/getErrorMessage';
 import { getRandomId } from '@/helpers/getRandomId';
 import { userService } from '@/services/user.service';
 import type { TNotification } from '@/types/notification.types';
-import type { TSendLoginUserData, TSendRegUserData, TUserData } from '@/types/user.types';
+import type { TEditProfileData, TSendLoginUserData, TSendRegUserData, TUserData } from '@/types/user.types';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { defineStore } from 'pinia';
 import { useNotificationsStore } from './notifications.store';
@@ -47,6 +47,7 @@ export const useUserStore = defineStore({
       try {
         const { user } = await userService.register(email, password);
         await userService.update(displayName);
+        await this.updateProfile({ displayName });
         const { uid } = user;
         this.user = { uid, displayName };
       } catch (error) {
@@ -79,6 +80,21 @@ export const useUserStore = defineStore({
       } catch (error) {
         const { addNotification } = useNotificationsStore();
         const message = getErrorMessage(error) || 'Error logout';
+        const notification: TNotification = { id: getRandomId(), type: 'error', message };
+        addNotification(notification);
+      }
+    },
+
+    async updateProfile({ displayName }: TEditProfileData) {
+      if (!this.user) return;
+      try {
+        await userService.update(displayName);
+        if (displayName) {
+          this.user.displayName = displayName;
+        }
+      } catch (error) {
+        const { addNotification } = useNotificationsStore();
+        const message = getErrorMessage(error) || 'Error update profile';
         const notification: TNotification = { id: getRandomId(), type: 'error', message };
         addNotification(notification);
       }
